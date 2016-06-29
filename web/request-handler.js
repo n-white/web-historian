@@ -22,13 +22,17 @@ exports.handleRequest = function (req, res) {
     if (req.url === '/') {
       url = '/index.html';
       fs.readFile(archive.paths.siteAssets + url, { encoding: 'utf-8' }, (err, data) => {
-        if (err) throw err;
+        if (err) {
+          throw err;
+        }
         results = data;
       });
     } else {
       url = req.url;
       fs.readFile(archive.paths.archivedSites + url, { encoding: 'utf-8' }, (err, data) => {
-        if (err) throw err;
+        if (err) {
+          throw err;
+        }
         results = data;
         // console.log(data);
       });
