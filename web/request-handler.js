@@ -14,6 +14,7 @@ exports.handleRequest = function (req, res) {
   var statusCode;
 
 
+
   if (req.method === 'GET') {
     statusCode = 200;
 
@@ -26,11 +27,11 @@ exports.handleRequest = function (req, res) {
           statusCode = 404;
           res.writeHead(statusCode, headers);
           res.end(results);
-          console.log(results, statusCode);
+          // console.log(results, statusCode);
         } else {
           results = data;
           res.writeHead(statusCode, headers);
-          console.log(results, statusCode);
+          // console.log(results, statusCode);
           res.end(results);             
         }
       });
@@ -41,11 +42,11 @@ exports.handleRequest = function (req, res) {
           statusCode = 404;
           res.writeHead(statusCode, headers);
           res.end(results);
-          console.log(results, statusCode);
+          // console.log(results, statusCode);
         } else {
           results = data;
           res.writeHead(statusCode, headers);
-          console.log(results, statusCode);
+          // console.log(results, statusCode);
           res.end(results);        
         }
       });
@@ -61,21 +62,30 @@ exports.handleRequest = function (req, res) {
       newText += chunk.toString('utf-8').substring(4);
     });
 
-    req.on('end', function () {
-      fs.writeFile(archive.paths.list, newText + '\n', { encoding: 'utf-8' }, (err) => {
+    req.on('end', function() {
 
-        if (err) {
-          statusCode = 400;
-          res.writeHead(statusCode, headers);
-          res.end();
-        } else {
-          statusCode = 302;
-          res.writeHead(statusCode, headers);
-          res.end('successful post');
-        }
+      archive.isUrlInList(newText, archive.addUrlToList);      
+      archive.readListOfUrls(archive.downloadUrls);
+      res.writeHead(302, headers);
+      res.end('website added');
 
-      });
     });
+
+    // req.on('end', function () {
+    //   fs.writeFile(archive.paths.list, newText + '\n', { encoding: 'utf-8' }, (err) => {
+
+    //     if (err) {
+    //       statusCode = 400;
+    //       res.writeHead(statusCode, headers);
+    //       res.end();
+    //     } else {
+    //       statusCode = 302;
+    //       res.writeHead(statusCode, headers);
+    //       res.end('website added');
+    //     }
+
+    //   });
+    // });
     
 
   }

@@ -49,7 +49,9 @@ exports.isUrlInList = function(target, callback) {
       }
     }
 
-    callback(exists);
+    if (!exists) {
+      callback(target);      
+    }
 
   });
 
@@ -75,7 +77,7 @@ exports.addUrlToList = function(target, callback) {
 
       }
 
-      callback();
+      // callback();
     });
     
   });
@@ -102,8 +104,9 @@ exports.downloadUrls = function(urlArray) {
   urlArray.forEach((item) => {
     fs.writeFile(exports.paths.archivedSites + '/' + item, ' ', { encoding: 'utf-8'}, (err) => {
       if (err) {
+        console.log(`${item} resulted in an error`);
         console.log('error');
-        throw error;
+        //throw error;
       } else {
         console.log('success');
       } 
