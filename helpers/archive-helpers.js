@@ -55,7 +55,31 @@ exports.isUrlInList = function(target, callback) {
 
 };
 
-exports.addUrlToList = function() {
+exports.addUrlToList = function(target, callback) {
+
+  var results = [];
+
+  fs.readFile(exports.paths.list, { encoding: 'utf-8' }, (err, data) => {
+
+    results = data.split('\n').slice(0, results.length - 1);
+    results.push(target);
+    results = results.join('\n');
+
+    fs.writeFile(exports.paths.list, results + '\n', { encoding: 'utf-8'}, (err) => {
+
+      if (err) {
+        console.log('error');
+        throw error;
+      } else {
+        console.log('success');
+
+      }
+
+      callback();
+    });
+    
+  });
+
 };
 
 exports.isUrlArchived = function() {
