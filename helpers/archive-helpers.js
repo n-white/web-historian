@@ -1,6 +1,7 @@
 var fs = require('fs');
 var path = require('path');
 var _ = require('underscore');
+var request = require('request');
 
 /*
  * You will need to reuse the same paths many times over in the course of this sprint.
@@ -94,39 +95,33 @@ exports.isUrlArchived = function(target, callback) {
       }
     }
 
-    callback(exists);
+    return exists;
+    //callback(exists);
 
   });
 };
-
-var request = require('request');
-
-// request({
-//   uri: "http://www.sitepoint.com",
-// }, function(error, response, body) {
-//   console.log(body);
-// });
 
 exports.downloadUrls = function(urlArray) {
 
   urlArray.forEach((item) => {
 
-    request({
-      uri: item
-    }, (error, response, body) => {
-      console.log('ALS;DKFJA;LSKDFJ;LASKDFJAL;SKDFJAL;SKDFJA;LSDKFJ', body);
-    });
+    console.log(item, 'heres my url');
 
+    request('http://' + item, function(err, response, body) {
+      if (err) { console.log('errrrrror'); }
+      console.log(body, 'heres my url againnnn');
+      
+      fs.writeFile(exports.paths.archivedSites + '/' + item, body, { encoding: 'utf-8'}, (err) => {
+        if (err) {
+          console.log(`${item} resulted in an error`);
+          console.log('error');
+          //throw error;
+        } else {
+          console.log('successsssssssssssss');
+        } 
+      });
+    }
+  );
 
-    fs.writeFile(exports.paths.archivedSites + '/' + item, 'testing', { encoding: 'utf-8'}, (err) => {
-      if (err) {
-        console.log(`${item} resulted in an error`);
-        console.log('error');
-        //throw error;
-      } else {
-        console.log('success');
-      } 
-    });
   });
-
 };

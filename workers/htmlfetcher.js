@@ -2,12 +2,25 @@
 // that are waiting.
 
 var archive = require('../helpers/archive-helpers');
+var fs = require('fs');
+var cheerio = require('cheerio');
 
 
-var request = require('request');
+// exports.appendHtml = function(sourceFile) {
 
-request({
-  uri: 'http://www.sitepoint.com',
-}, function(error, response, body) {
-  console.log(body);
-});
+//   if (archive.isUrlArchived(sourceFile)) {
+
+//     var body;
+
+//     fs.readFile(archive.paths.archivedSites + '/' + sourceFile, { encoding: 'utf-8' }, (err, data) => {
+      
+//       body = data;
+
+//     });
+
+//     return body;
+
+//   }
+
+
+// };

@@ -60,6 +60,13 @@ exports.handleRequest = function (req, res) {
     
     var newText = '';
 
+    // fs.readFile('www.google.com', (err, data) => {
+    //   if (err) { 
+    //     throw err;
+    //   }
+    //   console.log(data);
+    // });
+
     req.on('data', (chunk) => {
       newText += chunk.toString('utf-8').substring(4);
     });
@@ -75,8 +82,25 @@ exports.handleRequest = function (req, res) {
 
       archive.isUrlInList(newText, archive.addUrlToList);      
       archive.readListOfUrls(archive.downloadUrls);
-      res.writeHead(302, headers);
-      res.end('website added');
+      
+      if (!archive.isUrlArchived(newText)) {
+        
+        var body;
+
+        fs.readFile(archive.paths.archivedSites + '/' + newText, { encoding: 'utf-8' }, (err, data) => {
+    
+          body = data;
+
+          res.writeHead(302, headers);
+          res.end(body);
+
+        }); 
+      } else {
+        res.writeHead(302, headers);
+        res.end('website added');
+      }
+
+
 
     });
 
