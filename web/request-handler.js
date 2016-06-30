@@ -52,7 +52,9 @@ exports.handleRequest = function (req, res) {
       });
     }
 
-  } else if (req.method === 'POST') {
+  }
+
+  if (req.method === 'POST') {
 
     url = req.url;
     
@@ -63,6 +65,13 @@ exports.handleRequest = function (req, res) {
     });
 
     req.on('end', function() {
+
+      // if file is in the sites folder
+        // read the file
+        // append the file to the DOM
+
+      // else check if the file is listed in the sites.txt
+        // add file to the folder
 
       archive.isUrlInList(newText, archive.addUrlToList);      
       archive.readListOfUrls(archive.downloadUrls);
