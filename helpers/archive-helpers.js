@@ -26,17 +26,13 @@ exports.initialize = function(pathsObj) {
 // modularize your code. Keep it clean!
 
 exports.readListOfUrls = function(callback) {
-
   var results = [];
+  var test = 'example1.com\nexample2.com';
 
-  fs.readFile(archive.paths.list, { encoding: 'utf-8' }, (err, data) => {
-    console.log(data);
+  fs.readFile(exports.paths.list, { encoding: 'utf-8' }, (err, data) => {
+    results = data.split('\n');
+    callback(results);
   });
-  //read the sites.txt
-    //create an array of the websites in the file
-      //for loop, pushing at each \n
-
-  callback(results);
 
 };
 
