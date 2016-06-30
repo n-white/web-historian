@@ -58,7 +58,6 @@ exports.handleRequest = function (req, res) {
     var newText = '';
 
     req.on('data', (chunk) => {
-      //console.log('09123847901238470912384709123847', chunk.toString('utf-8').substring(4));
       newText += chunk.toString('utf-8').substring(4);
     });
 
@@ -67,11 +66,9 @@ exports.handleRequest = function (req, res) {
 
         if (err) {
           statusCode = 400;
-          console.log('found a post error');
           res.writeHead(statusCode, headers);
           res.end();
         } else {
-          console.log('successful posting');
           statusCode = 302;
           res.writeHead(statusCode, headers);
           res.end('successful post');
