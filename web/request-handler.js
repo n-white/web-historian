@@ -23,25 +23,64 @@ exports.handleRequest = function (req, res) {
       url = '/index.html';
       fs.readFile(archive.paths.siteAssets + url, { encoding: 'utf-8' }, (err, data) => {
         if (err) {
-          throw err;
+          statusCode = 404;
+          res.writeHead(statusCode, headers);
+          res.end(results);
+          console.log(results, statusCode);
+        } else {
+          results = data;
+          res.writeHead(statusCode, headers);
+          console.log(results, statusCode);
+          res.end(results);             
         }
-        results = data;
       });
     } else {
       url = req.url;
       fs.readFile(archive.paths.archivedSites + url, { encoding: 'utf-8' }, (err, data) => {
         if (err) {
-          throw err;
+          statusCode = 404;
+          res.writeHead(statusCode, headers);
+          res.end(results);
+          console.log(results, statusCode);
+        } else {
+          results = data;
+          res.writeHead(statusCode, headers);
+          console.log(results, statusCode);
+          res.end(results);        
         }
-        results = data;
-        // console.log(data);
       });
     }
 
+  } else if (req.method === 'POST') {
 
-    res.writeHead(statusCode, headers);
-    console.log(results);
-    res.end(results);
+    url = req.url;
+    
+    var newText = '';
+
+    req.on('data', (chunk) => {
+      //console.log('09123847901238470912384709123847', chunk.toString('utf-8').substring(4));
+      newText += chunk.toString('utf-8').substring(4);
+    });
+
+    req.on('end', function () {
+      fs.writeFile(archive.paths.list, newText + '\n', { encoding: 'utf-8' }, (err) => {
+
+        if (err) {
+          statusCode = 400;
+          console.log('found a post error');
+          res.writeHead(statusCode, headers);
+          res.end();
+        } else {
+          console.log('successful posting');
+          statusCode = 302;
+          res.writeHead(statusCode, headers);
+          res.end('successful post');
+        }
+
+      });
+    });
+    
+
   }
 
 
