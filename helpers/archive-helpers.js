@@ -82,8 +82,32 @@ exports.addUrlToList = function(target, callback) {
 
 };
 
-exports.isUrlArchived = function() {
+exports.isUrlArchived = function(target, callback) {
+  var exists = false;
+
+  fs.readdir(exports.paths.archivedSites, (err, files) => {
+    for (var file of files) {
+      if (target === file) {
+        exists = true;
+      }
+    }
+
+    callback(exists);
+
+  });
 };
 
-exports.downloadUrls = function() {
+exports.downloadUrls = function(urlArray) {
+
+  urlArray.forEach((item) => {
+    fs.writeFile(exports.paths.archivedSites + '/' + item, ' ', { encoding: 'utf-8'}, (err) => {
+      if (err) {
+        console.log('error');
+        throw error;
+      } else {
+        console.log('success');
+      } 
+    });
+  });
+
 };
