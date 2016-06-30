@@ -27,7 +27,6 @@ exports.initialize = function(pathsObj) {
 
 exports.readListOfUrls = function(callback) {
   var results = [];
-  var test = 'example1.com\nexample2.com';
 
   fs.readFile(exports.paths.list, { encoding: 'utf-8' }, (err, data) => {
     results = data.split('\n');
@@ -36,7 +35,24 @@ exports.readListOfUrls = function(callback) {
 
 };
 
-exports.isUrlInList = function() {
+exports.isUrlInList = function(target, callback) {
+
+  var results = [];
+  var exists = false;
+
+  fs.readFile(exports.paths.list, { encoding: 'utf-8' }, (err, data) => {
+    results = data.split('\n');
+
+    for (var url of results) {
+      if (url === target) {
+        exists = true;
+      }
+    }
+
+    callback(exists);
+
+  });
+
 };
 
 exports.addUrlToList = function() {
